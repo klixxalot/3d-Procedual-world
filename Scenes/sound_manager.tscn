@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://doydtr3vye0or"]
+
+[ext_resource type="Script" uid="uid://bthyumgadofiu" path="res://Scripts/SoundManager.gd" id="1_25ke0"]
+[ext_resource type="AudioStream" uid="uid://cchwoh35f1133" path="res://Audio/151858__nhmwretched__missile-firing-fl.mp3" id="2_1ohty"]
+[ext_resource type="AudioStream" uid="uid://u6v0jyscjlbk" path="res://Audio/434423__v-ktor__explosion04.wav" id="3_1ohty"]
+[ext_resource type="AudioStream" uid="uid://mc0tpm7kuntw" path="res://Audio/gunfire-single-shot-colt-peacemaker.wav" id="4_tox07"]
+
+[node name="SoundManager" type="Node"]
+script = ExtResource("1_25ke0")
+
+[node name="MissileLaunch" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("2_1ohty")
+volume_db = -19.809
+bus = &"Sfx"
+
+[node name="Explosion" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_1ohty")
+volume_db = 4.685
+bus = &"Sfx"
+
+[node name="Gunfire" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("4_tox07")
+bus = &"Sfx"

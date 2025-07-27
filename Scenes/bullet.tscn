@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://25q5gxnojqil"]
+
+[ext_resource type="PackedScene" uid="uid://d18kd83j5cti7" path="res://MyGLB/bullet.glb" id="1_v7oki"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_v8qja"]
+radius = 0.0176238
+
+[node name="Bullet" type="RigidBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00640053, 0.00865964, 0.0156413)
+shape = SubResource("SphereShape3D_v8qja")
+
+[node name="bullet" parent="." instance=ExtResource("1_v7oki")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0132378, 0, 0.0242314)

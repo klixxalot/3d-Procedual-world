@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://iwytbdvqdgwg"]
+
+[ext_resource type="PackedScene" uid="uid://dsbhtm6f254lg" path="res://MyGLB/missle-fat.glb" id="1_4vug3"]
+[ext_resource type="Script" uid="uid://cbluxe2epgqrm" path="res://Scripts/missle.gd" id="1_bq2cw"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_4vug3"]
+
+[node name="Missle" type="RigidBody3D" groups=["Missile"]]
+gravity_scale = 0.0
+script = ExtResource("1_bq2cw")
+
+[node name="missle-fat" parent="." instance=ExtResource("1_4vug3")]
+transform = Transform3D(-0.0499965, 0, -0.000589913, 0, 0.05, 0, 0.000589913, 0, -0.0499965, -0.0506244, 0, 0.0475084)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.05, 0, 0, 0, -2.18557e-09, 0.05, 0, -0.05, -2.18557e-09, -0.0222639, 0.026391, 0.0452605)
+shape = SubResource("CylinderShape3D_4vug3")

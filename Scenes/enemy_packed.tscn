@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://cpt7ya0at46cp"]
+
+[ext_resource type="Script" uid="uid://dgdo6tv5pud3e" path="res://Scripts/enemy.gd" id="1_50pmy"]
+[ext_resource type="PackedScene" uid="uid://ddmx8rt0jh0hw" path="res://GLB format/enemy-ufo-a.glb" id="2_2jmbt"]
+[ext_resource type="PackedScene" uid="uid://doydtr3vye0or" path="res://Scenes/sound_manager.tscn" id="2_y5be4"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hghv2"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_ne65n"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_2jmbt"]
+
+[node name="Enemy" type="RigidBody3D" groups=["Enemies"]]
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+script = ExtResource("1_50pmy")
+speed = 2.0
+
+[node name="SoundManager" parent="." instance=ExtResource("2_y5be4")]
+
+[node name="enemy-ufo-a2" parent="." instance=ExtResource("2_2jmbt")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.012, 0.0285993, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.799013, 0, 0, 0, 0.799013, 0, 0, 0, 0.799013, -0.00253279, 0.315487, 0.0267787)
+shape = SubResource("SphereShape3D_hghv2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -0.0176661, 0.290119, 0)
+visible = false
+mesh = SubResource("SphereMesh_ne65n")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.279271, 0)
+shape = SubResource("SphereShape3D_2jmbt")
+
+[connection signal="enemy_destoryed" from="." to="SoundManager" method="_on_enemy_enemy_destoryed"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

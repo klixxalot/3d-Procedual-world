@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbn46rlsvmi1x"]
+
+[ext_resource type="PackedScene" uid="uid://d18kd83j5cti7" path="res://MyGLB/bullet.glb" id="1_f67et"]
+[ext_resource type="Script" uid="uid://cbluxe2epgqrm" path="res://Scripts/missle.gd" id="1_lhjas"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_v8qja"]
+radius = 0.0176238
+
+[node name="Bullet" type="RigidBody3D" groups=["Missile"]]
+gravity_scale = 0.0
+script = ExtResource("1_lhjas")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["Missile"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00263141, 0.0179677, 0.00844172)
+shape = SubResource("SphereShape3D_v8qja")
+
+[node name="bullet" parent="." instance=ExtResource("1_f67et")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0132378, 0, 0.0242314)

@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://vtyisx1am4l0"]
+
+[ext_resource type="Script" uid="uid://dicopwh2ulu71" path="res://Scripts/player.gd" id="1_v0iea"]
+[ext_resource type="PackedScene" uid="uid://6kuh8ua6hpok" path="res://Scenes/missile_spawn_point.tscn" id="2_cvnsp"]
+[ext_resource type="PackedScene" uid="uid://doydtr3vye0or" path="res://Scenes/sound_manager.tscn" id="2_vgqql"]
+[ext_resource type="PackedScene" uid="uid://dsw0ssq0o0s7b" path="res://Scenes/missle_packed.tscn" id="3_6t5aa"]
+[ext_resource type="PackedScene" uid="uid://cbn46rlsvmi1x" path="res://Scenes/bullet_packed.tscn" id="5_fkybt"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_f60y1"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_v0iea"]
+
+[node name="Player" type="RigidBody3D"]
+rotation_order = 0
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+linear_damp = 3.0
+script = ExtResource("1_v0iea")
+
+[node name="SoundManager" parent="." instance=ExtResource("2_vgqql")]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.1133, 0)
+mesh = SubResource("CapsuleMesh_f60y1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.1133, 0)
+shape = SubResource("CylinderShape3D_v0iea")
+
+[node name="TwistPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="PitchPivot" type="Node3D" parent="TwistPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.904827, 0.425779, 0, -0.425779, 0.904827, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="TwistPivot/PitchPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="MissileSpawnPoint" parent="." instance=ExtResource("2_cvnsp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0329169, 1.18357, -0.0376364)
+debug = false
+missile = ExtResource("3_6t5aa")
+range = 25.0
+effective_range = 25.0
+speed = 2.0
+
+[node name="MissileSpawnPoint2" parent="." instance=ExtResource("2_cvnsp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0163535, 1.20873, -0.04725)
+debug = false
+missile = ExtResource("5_fkybt")
+range = 6.225
+effective_range = 9.0
+missile_damage = 20.0
+reload = 0.25
+type = 1
+
+[connection signal="missile_spawned" from="MissileSpawnPoint" to="SoundManager" method="_on_missile_spawn_point_missile_spawned"]
+[connection signal="bullet_spawned" from="MissileSpawnPoint2" to="SoundManager" method="_on_missile_spawn_point_2_bullet_spawned"]

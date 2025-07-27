@@ -1,0 +1,89 @@
+[gd_scene load_steps=3 format=3 uid="uid://c0avh3rl4rthb"]
+
+[ext_resource type="PackedScene" uid="uid://cbn46rlsvmi1x" path="res://Scenes/bullet_packed.tscn" id="2_ski2a"]
+
+[sub_resource type="GDScript" id="GDScript_gcyjx"]
+script/source = "extends Node3D
+
+class_name BulletSpawnPoint
+
+@export var debug: bool = true
+
+#missle packed scene
+@export var missile: PackedScene
+
+#set the range, effective range and reload - range is the distance the missle will travel, 
+#effective range is the distance the missle is fired at
+
+@export_range(1.0, 30) var range: float = 1.0
+@export_range(1.0, 25) var effective_range: float = 1.0
+@export_range(10.0, 200.00) var missile_damage: float = 100.0
+@export var reload: float = 15.0
+@export var speed: float = 5.0
+
+var missile_cooldown: float
+
+#create a signal for the spawned missles to attach noises etc
+signal bullet_spawned(body: RigidBody3D)
+
+#get the launch location for THIS spawned missle
+var _launch_location: Vector3
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	var missile_cooldown: float = reload
+	if missile == null:
+		push_error(\"Missle %s has no scene assigned\" % name)
+		return
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _physics_process(delta: float) -> void:
+	var closest_enemy = _getClosestEnemy()
+	if missile_cooldown > 0.0:
+		missile_cooldown -= delta
+	#should only be not null when within effective range
+	if closest_enemy != null and missile_cooldown <= 0.0:
+		print (\"Enemy Detected\")
+		print (\"launch missles\")
+		_spawnMissile(closest_enemy)
+		missile_cooldown = reload
+	#print (str(missile_cooldown))
+
+
+func _spawnMissile(closest_enemy: Node3D) -> void:
+	var missiles = missile.instantiate()
+	missiles.global_transform = global_transform
+	missiles.set(\"target\", closest_enemy)
+	missiles.set(\"speed\", speed)
+	missiles.set(\"missile_damage\", missile_damage)
+	missiles.set(\"range\", range)
+	emit_signal(\"bullet_spawned\", missiles)
+	get_tree().current_scene.add_child(missiles)
+
+func _getClosestEnemy() -> Node3D:
+	var closest_enemy = null
+	var closest_distance_sq = INF
+	
+	for enemy in get_tree().get_nodes_in_group(\"Enemies\"):
+		#make sure its not self
+		if is_instance_valid(enemy) and enemy != self:
+			var dist_sq = global_position.distance_squared_to(enemy.global_position)
+			if dist_sq < closest_distance_sq:
+				closest_distance_sq = dist_sq
+				closest_enemy = enemy
+
+	if debug:
+		if closest_enemy != null:
+			print (str(closest_enemy.global_position) + \" - \" + str(closest_distance_sq))
+			
+	if closest_distance_sq < effective_range:
+		return closest_enemy
+	else:
+		return null
+"
+
+[node name="BulletSpawnPoint" type="Node3D"]
+script = SubResource("GDScript_gcyjx")
+missile = ExtResource("2_ski2a")
+
+[node name="Marker3D" type="Marker3D" parent="."]

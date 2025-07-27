@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://vtyisx1am4l0"]
+
+[ext_resource type="Script" uid="uid://dicopwh2ulu71" path="res://Scripts/player.gd" id="1_v0iea"]
+[ext_resource type="PackedScene" uid="uid://6kuh8ua6hpok" path="res://Scenes/missle_spawn_point.tscn" id="2_cvnsp"]
+[ext_resource type="PackedScene" uid="uid://dsw0ssq0o0s7b" path="res://Scenes/missle_packed.tscn" id="3_6t5aa"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_f60y1"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_v0iea"]
+
+[node name="Player" type="RigidBody3D"]
+rotation_order = 0
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
+linear_damp = 3.0
+script = ExtResource("1_v0iea")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.1133, 0)
+mesh = SubResource("CapsuleMesh_f60y1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 1.1133, 0)
+shape = SubResource("CylinderShape3D_v0iea")
+
+[node name="TwistPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="PitchPivot" type="Node3D" parent="TwistPivot"]
+transform = Transform3D(1, 0, 0, 0, 0.904827, 0.425779, 0, -0.425779, 0.904827, 0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="TwistPivot/PitchPivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+
+[node name="MissleSpawnPoint" parent="." instance=ExtResource("2_cvnsp")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0473601, 1.18599, -0.0160318)
+missile = ExtResource("3_6t5aa")
+range = 30.0
+effective_range = 25.0
